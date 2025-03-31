@@ -1,3 +1,71 @@
+# User Management System
+
+A responsive user management application built with React and TypeScript, with robust component architecture.
+
+## Tech Stack
+
+### Core Technologies
+- **React 18** with **TypeScript**
+- **Redux Toolkit**
+- **React Router v6**
+- **Tailwind CSS**
+
+### Key Features
+- **Advanced Data Table Component**
+  - Column sorting
+  - Client-side pagination
+  - Custom cell rendering
+  - Responsive design
+
+- **Search Functionality**
+  - Real-time search
+  - Case-insensitive searching
+
+- **User Interface**
+  - Responsive design
+  - Loading states
+  - Error handling
+  - Smooth transitions
+
+### Testing
+- **React Testing Library**
+- Unit tests
+
+
+## Project Structure
+```
+src/
+├── components/        # Reusable UI components
+│   ├── Table/        # Generic table component
+│   └── ...
+├── containers/       # Feature-specific containers
+│   └── UserList/     # User management feature
+├── redux/           # State management
+│   ├── slices/      # Redux Toolkit slices
+│   └── hooks.ts     # Custom Redux hooks
+├── utils/           # Utility functions
+└── types/           # TypeScript type definitions
+```
+
+
+
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+
+# Run tests
+npm test
+
+# Build for production
+npm run build
+```
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
