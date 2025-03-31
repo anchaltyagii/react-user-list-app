@@ -14,6 +14,8 @@ interface TableProps<T> {
   onRowClick?: (item: T) => void;
   emptyMessage?: string;
   pageSize?: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 }
 
 interface PaginationProps {
@@ -123,24 +125,22 @@ type SortConfig<T> = {
   direction: SortDirection;
 };
 
-const Table = <T extends { id: string }>({
+const Table = <T extends Record<string, any>>({
   data,
   columns,
   selectable = false,
   onRowClick,
   emptyMessage = 'No data available',
   pageSize = 10,
+  currentPage,
+  onPageChange,
 }: TableProps<T>) => {
-  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
-  const [sortConfig, setSortConfig] = useState<SortConfig<T>>({
-    columnIndex: null,
-    direction: null,
-  });
-  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
+  const [sortConfig, setSortConfig] = useState<SortConfig<T> | null>(null);
 
   const handleSort = (columnIndex: number) => {
     setSortConfig((prevConfig) => {
-      if (prevConfig.columnIndex === columnIndex) {
+      if (prevConfig?.columnIndex === columnIndex) {
         if (prevConfig.direction === 'asc')
           return { columnIndex, direction: 'desc' };
         if (prevConfig.direction === 'desc')
@@ -180,7 +180,7 @@ const Table = <T extends { id: string }>({
   };
 
   const sortedData = [...data].sort((a, b) => {
-    if (sortConfig.columnIndex === null || !sortConfig.direction) return 0;
+    if (sortConfig?.columnIndex === null || !sortConfig?.direction) return 0;
 
     const column = columns[sortConfig.columnIndex];
     if (!column) return 0;
@@ -196,13 +196,10 @@ const Table = <T extends { id: string }>({
     return sortConfig.direction === 'asc' ? comparison : -comparison;
   });
 
-  const totalPages = Math.ceil(sortedData.length / pageSize);
+  const totalPages = Math.ceil(data.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
-  const paginatedData = sortedData.slice(startIndex, startIndex + pageSize);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  const endIndex = startIndex + pageSize;
+  const paginatedData = sortedData.slice(startIndex, endIndex);
 
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -212,17 +209,6 @@ const Table = <T extends { id: string }>({
     }
   };
 
-  const handleSelectRow = (id: string) => {
-    setSelectedRows((prev) => {
-      const newSelected = new Set(prev);
-      if (newSelected.has(id)) {
-        newSelected.delete(id);
-      } else {
-        newSelected.add(id);
-      }
-      return newSelected;
-    });
-  };
 
   const handleRowClick = (item: T) => {
     if (onRowClick) {
@@ -253,9 +239,9 @@ const Table = <T extends { id: string }>({
               >
                 <div className='flex items-center'>
                   {column.header}
-                  {column.sortable && sortConfig.columnIndex === index && (
+                  {column.sortable && sortConfig?.columnIndex === index && (
                     <span className='ml-1'>
-                      {sortConfig.direction === 'asc' ? '↑' : '↓'}
+                      {sortConfig?.direction === 'asc' ? '↑' : '↓'}
                     </span>
                   )}
                 </div>
@@ -274,7 +260,7 @@ const Table = <T extends { id: string }>({
               </td>
             </tr>
           ) : (
-            paginatedData.map((item) => (
+            paginatedData.map((item, index) => (
               <tr
                 key={item.id}
                 className={`hover:bg-gray-50 ${
@@ -295,11 +281,11 @@ const Table = <T extends { id: string }>({
           )}
         </tbody>
       </table>
-      {data.length > 0 && (
+      {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={handlePageChange}
+          onPageChange={onPageChange}
         />
       )}
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   setSelectedUser,
@@ -12,16 +12,29 @@ import { useAppDispatch } from '../../redux/hooks';
 
 const UserList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { users = [], filteredUsers = [], loading, error, searchQuery } = useSelector(
-    (state: any) => state.users
-  );
+  const {
+    users = [],
+    filteredUsers = [],
+    loading,
+    error,
+    searchQuery,
+  } = useSelector((state: any) => state.users);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchQuery(event.target.value));
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchQuery(e.target.value));
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   const handleRowClick = (user: User) => {
@@ -34,7 +47,7 @@ const UserList: React.FC = () => {
       accessor: (user: User) => (
         <Link
           to={`/users/${user.id}`}
-          className="flex items-center"
+          className='flex items-center'
           onClick={(e) => {
             e.stopPropagation();
             dispatch(setSelectedUser(user.id));
@@ -47,7 +60,9 @@ const UserList: React.FC = () => {
           >
             {getInitials(user.name)}
           </div>
-          <span className="ml-3 text-sm font-medium text-gray-900">{user.name}</span>
+          <span className='ml-3 text-sm font-medium text-gray-900'>
+            {user.name}
+          </span>
         </Link>
       ),
       sortValue: (user: User) => user.name,
@@ -68,9 +83,9 @@ const UserList: React.FC = () => {
       accessor: (user: User) => (
         <a
           href={`https://${user.website}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-800"
+          target='_blank'
+          rel='noopener noreferrer'
+          className='text-blue-600 hover:text-blue-800'
           onClick={(e) => e.stopPropagation()}
         >
           {user.website}
@@ -83,16 +98,16 @@ const UserList: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
-        <div className="text-xl text-gray-600">Loading users...</div>
+      <div className='min-h-screen bg-gray-50 p-8 flex items-center justify-center'>
+        <div className='text-xl text-gray-600'>Loading users...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
-        <div className="text-xl text-red-600">Error: {error}</div>
+      <div className='min-h-screen bg-gray-50 p-8 flex items-center justify-center'>
+        <div className='text-xl text-red-600'>Error: {error}</div>
       </div>
     );
   }
@@ -100,30 +115,30 @@ const UserList: React.FC = () => {
   const displayedUsers = searchQuery ? filteredUsers : users;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
-        <div className="px-6 py-4">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">Users</h1>
-            <div className="relative">
+    <div className='min-h-screen bg-gray-50 p-8'>
+      <div className='max-w-6xl mx-auto bg-white rounded-lg shadow-sm'>
+        <div className='px-6 py-4'>
+          <div className='flex justify-between items-center mb-6'>
+            <h1 className='text-2xl font-bold text-gray-800'>Users</h1>
+            <div className='relative'>
               <input
-                type="text"
-                placeholder="Search users..."
+                type='text'
+                placeholder='Search users...'
                 value={searchQuery}
                 onChange={handleSearch}
-                className="w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className='w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
               />
               <svg
-                className="absolute right-3 top-2.5 h-5 w-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                className='absolute right-3 top-2.5 h-5 w-5 text-gray-400'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
                   strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
                 />
               </svg>
             </div>
@@ -133,8 +148,10 @@ const UserList: React.FC = () => {
             columns={columns}
             selectable
             onRowClick={handleRowClick}
-            emptyMessage="No users found matching your search criteria."
+            emptyMessage='No users found matching your search criteria.'
             pageSize={5}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
           />
         </div>
       </div>
