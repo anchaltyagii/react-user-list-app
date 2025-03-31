@@ -30,40 +30,52 @@ const Pagination: React.FC<PaginationProps> = ({
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
-      <div className="flex justify-between flex-1 sm:hidden">
+    <div className='flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6'>
+      <div className='flex justify-between flex-1 sm:hidden'>
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className='relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
         >
           Previous
         </button>
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className='relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
         >
           Next
         </button>
       </div>
-      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+      <div className='hidden sm:flex sm:flex-1 sm:items-center sm:justify-between'>
         <div>
-          <p className="text-sm text-gray-700">
-            Showing page <span className="font-medium">{currentPage}</span> of{' '}
-            <span className="font-medium">{totalPages}</span>
+          <p className='text-sm text-gray-700'>
+            Showing page <span className='font-medium'>{currentPage}</span> of{' '}
+            <span className='font-medium'>{totalPages}</span>
           </p>
         </div>
         <div>
-          <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+          <nav
+            className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px'
+            aria-label='Pagination'
+          >
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className='relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
             >
-              <span className="sr-only">Previous</span>
-              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+              <span className='sr-only'>Previous</span>
+              <svg
+                className='h-5 w-5'
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 20 20'
+                fill='currentColor'
+              >
+                <path
+                  fillRule='evenodd'
+                  d='M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z'
+                  clipRule='evenodd'
+                />
               </svg>
             </button>
             {pages.map((page) => (
@@ -82,11 +94,20 @@ const Pagination: React.FC<PaginationProps> = ({
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
             >
-              <span className="sr-only">Next</span>
-              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+              <span className='sr-only'>Next</span>
+              <svg
+                className='h-5 w-5'
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 20 20'
+                fill='currentColor'
+              >
+                <path
+                  fillRule='evenodd'
+                  d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z'
+                  clipRule='evenodd'
+                />
               </svg>
             </button>
           </nav>
@@ -120,8 +141,10 @@ const Table = <T extends { id: string }>({
   const handleSort = (columnIndex: number) => {
     setSortConfig((prevConfig) => {
       if (prevConfig.columnIndex === columnIndex) {
-        if (prevConfig.direction === 'asc') return { columnIndex, direction: 'desc' };
-        if (prevConfig.direction === 'desc') return { columnIndex: null, direction: null };
+        if (prevConfig.direction === 'asc')
+          return { columnIndex, direction: 'desc' };
+        if (prevConfig.direction === 'desc')
+          return { columnIndex: null, direction: null };
         return { columnIndex, direction: 'asc' };
       }
       return { columnIndex, direction: 'asc' };
@@ -142,7 +165,9 @@ const Table = <T extends { id: string }>({
       if (typeof value === 'number') return value.toString();
       if (React.isValidElement(value)) {
         // For React elements, try to get text content
-        const element = value as React.ReactElement<{ children?: React.ReactNode }>;
+        const element = value as React.ReactElement<{
+          children?: React.ReactNode;
+        }>;
         const textContent = element.props?.children?.toString() || '';
         return textContent;
       }
@@ -213,33 +238,23 @@ const Table = <T extends { id: string }>({
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+    <div className='overflow-x-auto'>
+      <table className='min-w-full divide-y divide-gray-200'>
+        <thead className='bg-gray-50'>
           <tr>
-            {selectable && (
-              <th scope="col" className="px-6 py-3">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  checked={selectedRows.size === paginatedData.length}
-                  onChange={handleSelectAll}
-                />
-              </th>
-            )}
             {columns.map((column, index) => (
               <th
                 key={index}
-                scope="col"
+                scope='col'
                 className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
                   column.sortable ? 'hover:bg-gray-100 cursor-pointer' : ''
                 }`}
                 onClick={() => column.sortable && handleSort(index)}
               >
-                <div className="flex items-center">
+                <div className='flex items-center'>
                   {column.header}
                   {column.sortable && sortConfig.columnIndex === index && (
-                    <span className="ml-1">
+                    <span className='ml-1'>
                       {sortConfig.direction === 'asc' ? '↑' : '↓'}
                     </span>
                   )}
@@ -248,12 +263,12 @@ const Table = <T extends { id: string }>({
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className='bg-white divide-y divide-gray-200'>
           {paginatedData.length === 0 ? (
             <tr>
               <td
                 colSpan={selectable ? columns.length + 1 : columns.length}
-                className="px-6 py-4 text-center text-sm text-gray-500"
+                className='px-6 py-4 text-center text-sm text-gray-500'
               >
                 {emptyMessage}
               </td>
@@ -267,23 +282,10 @@ const Table = <T extends { id: string }>({
                 }`}
                 onClick={() => handleRowClick(item)}
               >
-                {selectable && (
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      checked={selectedRows.has(item.id)}
-                      onChange={(e) => {
-                        e.stopPropagation();
-                        handleSelectRow(item.id);
-                      }}
-                    />
-                  </td>
-                )}
                 {columns.map((column, index) => (
                   <td
                     key={index}
-                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                    className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'
                   >
                     {renderCell(item, column)}
                   </td>
@@ -304,4 +306,4 @@ const Table = <T extends { id: string }>({
   );
 };
 
-export default Table; 
+export default Table;

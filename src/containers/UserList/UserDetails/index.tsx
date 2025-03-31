@@ -3,17 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { setSelectedUser } from '../../../redux/slices/userSlice';
 import { useAppDispatch } from '../../../redux/hooks';
-
-const getInitialsColor = (initials: string) => {
-  switch (initials) {
-    case 'AM':
-      return 'bg-emerald-200';
-    case 'EW':
-      return 'bg-pink-200';
-    default:
-      return 'bg-purple-200';
-  }
-};
+import { getInitialsColor } from '../utils';
 
 const UserDetails: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
